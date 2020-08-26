@@ -1,0 +1,84 @@
+/********************* Base styles *********************/
+
+* {	box-sizing: border-box; }
+
+body {
+	font-family: "Helvetica", "Sans-Serif", "Arial" ;
+}
+
+h1 {
+	text-align: center;
+}
+
+h2 {
+	font-size: 1em;
+}
+
+#first-region .region-title {
+	background-color: #D59898;
+}
+
+#second-region .region-title {
+	background-color: #C14543;
+	color: white;
+}
+
+#third-region .region-title {
+	background-color: #E5D198;
+}
+
+.region {
+	background-color: #999999;
+	overflow: visible;
+	position: relative;
+	border: 1px solid black;
+	margin: 1%;
+}
+
+.region-title {
+	position: absolute;
+	right: 0;
+	padding: 0% 5% 0% 5%;	
+	border: 1px solid black;
+}
+
+.region-content {
+	clear: right;
+	padding: 10% 5% 5% 5%;
+}
+
+.row {
+	width: 100%;
+}
+
+/********************* Desktop *********************/
+@media (min-width: 992px) {
+	.region {
+		float: left;
+		width: 30%;
+	}
+}
+
+/********************* Tablet *********************/
+@media (min-width: 768px) and (max-width: 991px) {
+	/* Percentage changed due to margins 
+	(sizing is border block => doesn't take into account the margins) */
+	#first-region, #second-region {
+		float: left;
+		width: 48%;
+	}
+
+	#third-region {
+		clear: both;
+		width: 98%;
+	}
+}
+
+
+/********************* Mobile *********************/
+@media (max-width:  767px) {
+	.region {
+		float: left;
+		width: 100%
+	}
+}
