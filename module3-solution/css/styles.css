@@ -1,0 +1,17 @@
+
+body {
+	background-color: whitesmoke;
+	font-size: 1.6em;
+}
+
+main.container-fluid {
+	margin-top: -2vw;
+	background-color: white;
+}
+
+.menu-item {
+	background-color: #e6e6e6;
+	padding: 1vw;
+	/*margin: 1px;*/
+	border: 1vw solid white;
+}
