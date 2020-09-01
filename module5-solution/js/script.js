@@ -26,6 +26,8 @@ var menuItemHtml = "snippets/menu-item.html";
 // Convenience function for inserting innerHTML for 'select'
 var insertHtml = function (selector, html) {
   var targetElem = document.querySelector(selector);
+  // var targetElem = document.querySelector('#specials-tile');
+  // console.log("[insertHtml] targetElem: " + targetElem);
   targetElem.innerHTML = html;
 };
 
@@ -39,6 +41,10 @@ var showLoading = function (selector) {
 // Return substitute of '{{propName}}'
 // with propValue in given 'string'
 var insertProperty = function (string, propName, propValue) {
+	// console.log("[insertProperty] string: " + string);
+	// console.log("[insertProperty] propName: " + propName);
+	// console.log("[insertProperty] propValue: " + propValue);
+
   var propToReplace = "{{" + propName + "}}";
   string = string
     .replace(new RegExp(propToReplace, "g"), propValue);
@@ -82,9 +88,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
 // On first load, show home view
 showLoading("#main-content");
 $ajaxUtils.sendGetRequest(
-  allCategoriesUrl,
-  [...], // ***** <---- TODO: STEP 1: Substitute [...] ******
-  true); // Explicitly setting the flag to get JSON from server processed into an object literal
+ 	allCategoriesUrl,
+ 	buildAndShowHomeHTML, // ***** <---- TODO: STEP 1: Substitute [...] ******
+  	true); // Explicitly setting the flag to get JSON from server processed into an object literal
 });
 // *** finish **
 
@@ -93,38 +99,40 @@ $ajaxUtils.sendGetRequest(
 // returned from the server.
 function buildAndShowHomeHTML (categories) {
 
-  // Load home snippet page
-  $ajaxUtils.sendGetRequest(
-    homeHtmlUrl,
-    function (homeHtml) {
+	// Load home snippet page
+  	$ajaxUtils.sendGetRequest(
+    	homeHtmlUrl,
+    	function (homeHtml) {
 
-      // TODO: STEP 2: Here, call chooseRandomCategory, passing it retrieved 'categories'
-      // Pay attention to what type of data that function returns vs what the chosenCategoryShortName
-      // variable's name implies it expects.
-      // var chosenCategoryShortName = ....
-
-
-      // TODO: STEP 3: Substitute {{randomCategoryShortName}} in the home html snippet with the
-      // chosen category from STEP 2. Use existing insertProperty function for that purpose.
-      // Look through this code for an example of how to do use the insertProperty function.
-      // WARNING! You are inserting something that will have to result in a valid Javascript
-      // syntax because the substitution of {{randomCategoryShortName}} becomes an argument
-      // being passed into the $dc.loadMenuItems function. Think about what that argument needs
-      // to look like. For example, a valid call would look something like this:
-      // $dc.loadMenuItems('L')
-      // Hint: you need to surround the chosen category short name with something before inserting
-      // it into the home html snippet.
-      //
-      // var homeHtmlToInsertIntoMainPage = ....
+		    // TODO: STEP 2: Here, call chooseRandomCategory, passing it retrieved 'categories'
+		    // Pay attention to what type of data that function returns vs what the chosenCategoryShortName
+		    // variable's name implies it expects.
+		    var chosenCategoryShortName = chooseRandomCategory(categories).short_name;
+		    // console.log("chosenCategoryShortName: " + chosenCategoryShortName);
 
 
-      // TODO: STEP 4: Insert the the produced HTML in STEP 3 into the main page
-      // Use the existing insertHtml function for that purpose. Look through this code for an example
-      // of how to do that.
-      // ....
+		    // TODO: STEP 3: Substitute {{randomCategoryShortName}} in the home html snippet with the
+		    // chosen category from STEP 2. Use existing insertProperty function for that purpose.
+		    // Look through this code for an example of how to do use the insertProperty function.
+		    // WARNING! You are inserting something that will have to result in a valid Javascript
+		    // syntax because the substitution of {{randomCategoryShortName}} becomes an argument
+		    // being passed into the $dc.loadMenuItems function. Think about what that argument needs
+		    // to look like. For example, a valid call would look something like this:
+		    // $dc.loadMenuItems('L')
+		    // Hint: you need to surround the chosen category short name with something before inserting
+		    // it into the home html snippet.
+		    //
+		    var homeHtmlToInsertIntoMainPage = insertProperty(homeHtml, "randomCategoryShortName", "'" + chosenCategoryShortName + "'");
+		    // console.log(homeHtmlToInsertIntoMainPage);
 
-    },
-    false); // False here because we are getting just regular HTML from the server, so no need to process JSON.
+		    // TODO: STEP 4: Insert the the produced HTML in STEP 3 into the main page
+		    // Use the existing insertHtml function for that purpose. Look through this code for an example
+		    // of how to do that.
+		    if (homeHtmlToInsertIntoMainPage == null) {console.log("homeHtmlToInsertIntoMainPage is NULL");}
+		    insertHtml("#main-content", homeHtmlToInsertIntoMainPage);
+
+	    },
+	false); // False here because we are getting just regular HTML from the server, so no need to process JSON.
 }
 
 
